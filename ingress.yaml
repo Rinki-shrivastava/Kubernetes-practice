@@ -1,0 +1,84 @@
+## POD1
+apiVersion: v1
+kind: Pod
+metadata:
+  name: home-app
+  labels:
+    app: home-app
+spec:
+  containers:
+    - name: home-app
+      image: nginx
+      ports:
+        - containerPort: 80
+
+---
+## POD2
+apiVersion: v1
+kind: Pod
+metadata:
+  name: laptop-app
+  labels:
+    app: laptop-app
+spec:
+  containers:
+    - name: laptop-app
+      image: httpd
+      ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-app-service
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: home-app
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: laptop-app-service
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: laptop-app
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ing
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: cbz.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: home-app-service
+                port:
+                  number: 80
+    
+    - host: laptop.cbz.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: laptop-app-service
+                port:
+                  number: 80

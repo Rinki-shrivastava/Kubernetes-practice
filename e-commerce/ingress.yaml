@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app
+spec:
+  defaultBackend:
+    service:
+      name: home-app-service
+      port:
+        number: 80
+  ingressClassName: nginx
+  rules:
+    - host: a40503227fe11451388ae467d69cdf7f-58c0466353f21821.elb.us-east-1.amazonaws.com
+      http:
+        paths:
+          - path: /cloth
+            pathType: Prefix
+            backend:
+              service:
+                name: cloth-app-service
+                port:
+                  number: 80
+          - path: /mobile
+            pathType: Prefix
+            backend:
+              service:
+                name: mobile-app-service
+                port:
+                  number: 80

@@ -1,0 +1,24 @@
+# apiVersion:   #library version 
+# kind:         #type of oject
+# metadata:     #data about object
+# spec:         #configuration of object
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  labels:
+    app: my-app
+  namespace: frontend
+spec:
+  containers:
+    - name: my-container
+      image: nginx
+      ports:
+        - containerPort: 80 
+
+    - name: tomcat-container
+      image: tomcat
+      ports: 
+        - containerPort: 8080
+...

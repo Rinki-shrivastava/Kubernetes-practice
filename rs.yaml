@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-rs
+  labels:
+    app: cbz-app
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: cbz-app
+    spec:
+      containers:
+        - name: my-container
+          image: nginx
+          ports:
+            - containerPort: 80 
+
+        - name: tomcat-container
+          image: tomcat
+          ports: 
+            - containerPort: 8080   
+  selector:
+    # matchLabels:
+    #   app: cbz-app
+    matchExpressions:
+      - {key: app, operator: In, values: [cbz-app, my-app]}
+
+# RC = Equality based Selector (=)
+# RS = Set based Selector (In, NotIn, Exist)
